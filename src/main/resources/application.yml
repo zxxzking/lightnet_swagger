@@ -1,0 +1,8 @@
+server:
+  port: 9999
+  tomcat:
+    uri-encoding: UTF-8
+
+swagger:
+  enable: true
+
