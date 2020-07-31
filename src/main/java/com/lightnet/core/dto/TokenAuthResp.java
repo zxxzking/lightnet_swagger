@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Setter
 @Builder(access = AccessLevel.PUBLIC)
 @ApiModel
-public class Resp {
+public class TokenAuthResp {
 
     @ApiModelProperty(value = "认证token", required = true)
     private String access_token;
