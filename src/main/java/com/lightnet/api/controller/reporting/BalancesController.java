@@ -6,8 +6,6 @@ import com.lightnet.core.dto.BalanceInfo;
 import com.lightnet.core.enums.Currency;
 import com.lightnet.core.resp.CommonResp;
 import io.swagger.annotations.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +45,7 @@ public class BalancesController {
     @ApiOperation(value = "获取余额历史记录")
     @GetMapping(value = "/history")
     public CommonResp<BalanceHistory> getBalanceHistory() {
-        CommonResp<BalanceHistory> resp = new CommonResp();
+        CommonResp<BalanceHistory> resp = new CommonResp<>();
         resp.setHas_more(false);
         List<BalanceHistory> list = Lists.newLinkedList();
         BalanceHistory history = new BalanceHistory(

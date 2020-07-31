@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@ConditionalOnProperty(name = "swagger.enable",  havingValue = "true")
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 public class Swagger2Config {
 
     @Bean
@@ -51,6 +51,19 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.lightnet.api.controller.payments"))
+                .paths(PathSelectors.any())
+                .build();
+
+    }
+
+    @Bean
+    public Docket createRestApi_FX() {
+
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("FX")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.lightnet.api.controller.FX"))
                 .paths(PathSelectors.any())
                 .build();
 

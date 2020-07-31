@@ -5,5 +5,7 @@ public enum Currency {
     USD,
     AUD,
     CNY,
-    HKD
+    HKD,
+    GBP,
+    EUR
 }
