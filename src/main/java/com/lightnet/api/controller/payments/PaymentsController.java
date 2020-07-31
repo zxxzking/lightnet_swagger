@@ -1,8 +1,6 @@
 package com.lightnet.api.controller.payments;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.google.common.collect.Lists;
-import com.lightnet.core.dto.BalanceInfo;
 import com.lightnet.core.enums.Currency;
 import io.swagger.annotations.*;
 import lombok.Builder;
@@ -10,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Api
 @RestController
@@ -27,22 +24,35 @@ public class PaymentsController {
         String user;
         @ApiModelProperty(value = "recipient account id")
         String targetAccount;
+        @ApiModelProperty
         String sourceAccount;
         @ApiModelProperty(value = "quote id")
         String quote;
+        @ApiModelProperty
         String status;
+        @ApiModelProperty
         String reference;
+        @ApiModelProperty
         float rate;
+        @ApiModelProperty
         String created;
         @ApiModelProperty(value = "your business profile id")
         String bussiness;
+        @ApiModelProperty
         String transferRequest;
+        @ApiModelProperty
         Details details;
+        @ApiModelProperty
         boolean hasActiveIssues;
+        @ApiModelProperty
         Currency sourceCurrency;
+        @ApiModelProperty
         float sourceValue;
+        @ApiModelProperty
         Currency targetCurrency;
+        @ApiModelProperty
         float targetValue;
+        @ApiModelProperty
         String customerTransactionId;
 
     }
@@ -51,10 +61,15 @@ public class PaymentsController {
     @Setter
     @ApiModel
     public static class CreatRequest {
+        @ApiModelProperty
         String sourceAccount;
+        @ApiModelProperty
         String targetAccount;
+        @ApiModelProperty
         String quoteUuid;
+        @ApiModelProperty
         String customerTransactionId;
+        @ApiModelProperty
         Details details;
     }
 
@@ -63,8 +78,11 @@ public class PaymentsController {
     @ApiModel
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Details {
+        @ApiModelProperty
         String reference;
+        @ApiModelProperty
         String transferPurpose;
+        @ApiModelProperty
         String sourceOfFunds;
 
         public Details() {
@@ -90,7 +108,7 @@ public class PaymentsController {
     })
     @ApiOperation(value = "cancel transfer")
     @PutMapping(value = "{transferId}/cancel")
-    public PaymentResp cancelPayment() {
+    public PaymentResp cancelPayment(@PathVariable String transferId) {
 
         return getDemoResp();
     }
@@ -173,7 +191,7 @@ public class PaymentsController {
     })
     @ApiOperation(value = "get transfer by id")
     @GetMapping("/{transferId}")
-    public String getTransferById() {
+    public String getTransferById(@PathVariable String transferId) {
 
         return "{\n" +
                 "  \"id\": 15574445,\n" +
@@ -205,7 +223,7 @@ public class PaymentsController {
     })
     @ApiOperation(value = "Get Transactions with Issues")
     @GetMapping("/{transferId}/issues")
-    public String getTransactionseWithIssues() {
+    public String getTransferWithIssues(@PathVariable String transferId) {
 
         return "[\n" +
                 "  {\n" +

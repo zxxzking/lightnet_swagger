@@ -5,4 +5,8 @@ server:
 
 swagger:
   enable: true
-
+spring:
+  mvc:
+    view:
+      prefix: /templates
+      suffix: .html
