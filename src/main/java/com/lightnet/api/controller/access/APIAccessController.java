@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api
 @RestController
 @RequestMapping(value = "/oauth")
-@NoAuth
 public class APIAccessController {
 
     @ApiModel

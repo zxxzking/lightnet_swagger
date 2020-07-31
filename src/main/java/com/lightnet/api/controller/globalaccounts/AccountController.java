@@ -1,10 +1,16 @@
 package com.lightnet.api.controller.globalaccounts;
 
+import com.google.common.collect.Lists;
+import com.lightnet.core.enums.Currency;
 import io.swagger.annotations.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api
@@ -34,27 +40,38 @@ public class AccountController {
     })
     @ApiOperation(value = "open account")
     @PostMapping("/create")
-    private Object openAccount(@RequestBody OpenAccountRequest openAccountRequest) {
+    private Account openAccount(@RequestBody OpenAccountRequest openAccountRequest) {
+        Account.AccountBuilder builder = Account.builder();
+        builder.account_name("string").account_number("88888888").account_routing_type("aba")
+                .account_routing_value("026073150").branch_code("447").country_code("AU").currency(Currency.AUD)
+                .id("7f687fe6-dcf4-4462-92fa-80335301d9d2").institution_name("Saxo Payments A/S")
+                .nick_name("GBP in UK for Subsidiary Company ABC").request_id("8d411ad4-aed6-1261-92fa-51225212e2e1")
+                .status("ACTIVE").swift_code("SXPYDEHH");
 
-        return "{\n" +
-                "  \"account_name\": \"string\",\n" +
-                "  \"account_number\": \"88888888\",\n" +
-                "  \"account_routing_type\": \"aba\",\n" +
-                "  \"account_routing_value\": \"026073150\",\n" +
-                "  \"branch_code\": \"447\",\n" +
-                "  \"clearing_systems\": [\n" +
-                "    \"ACH\"\n" +
-                "  ],\n" +
-                "  \"country_code\": \"AU\",\n" +
-                "  \"currency\": \"AUD\",\n" +
-                "  \"id\": \"7f687fe6-dcf4-4462-92fa-80335301d9d2\",\n" +
-                "  \"institution_name\": \"Saxo Payments A/S\",\n" +
-                "  \"nick_name\": \"GBP in UK for Subsidiary Company ABC\",\n" +
-                "  \"payment_methods\": [\n" +
-                "    \"LOCAL\"\n" +
-                "  ],\n" +
-                "  \"request_id\": \"8d411ad4-aed6-1261-92fa-51225212e2e1\",\n" +
-                "  \"status\": \"ACTIVE\",\n" +
-                "  \"swift_code\": \"SXPYDEHH\"";
+        return builder.build();
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @ApiModel
+    public static class Account {
+
+        String account_name;
+        String account_number;
+        String account_routing_type;
+        String account_routing_value;
+        String branch_code;
+        List<String> clearing_systems;
+        String country_code;
+        Currency currency;
+        String id;
+        String institution_name;
+        String nick_name;
+        List<String> payment_methods;
+        String request_id;
+        String status;
+        String swift_code;
+
     }
 }
