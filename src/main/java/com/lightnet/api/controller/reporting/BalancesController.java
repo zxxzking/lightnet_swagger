@@ -1,9 +1,10 @@
-package com.lightnet.api.controller.balance;
+package com.lightnet.api.controller.reporting;
 
 import com.google.common.collect.Lists;
 import com.lightnet.core.dto.BalanceHistory;
 import com.lightnet.core.dto.BalanceInfo;
 import com.lightnet.core.enums.Currency;
+import com.lightnet.core.resp.CommonResp;
 import io.swagger.annotations.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,17 +36,6 @@ public class BalancesController {
         return infoList;
     }
 
-    @ApiModel
-    @Getter
-    @Setter
-    public static class BalanceHistoryResp {
-
-        private boolean has_more;
-
-        private List<BalanceHistory> items;
-
-    }
-
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "currency", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "from_post_at", required = true),
@@ -56,8 +46,8 @@ public class BalancesController {
     })
     @ApiOperation(value = "获取余额历史记录")
     @GetMapping(value = "/history")
-    public BalanceHistoryResp getBalanceHistory() {
-        BalanceHistoryResp resp = new BalanceHistoryResp();
+    public CommonResp<BalanceHistory> getBalanceHistory() {
+        CommonResp<BalanceHistory> resp = new CommonResp();
         resp.setHas_more(false);
         List<BalanceHistory> list = Lists.newLinkedList();
         BalanceHistory history = new BalanceHistory(
