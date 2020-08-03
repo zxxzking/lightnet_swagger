@@ -1,14 +1,19 @@
 package com.lightnet.api.controller.FX;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.collect.Lists;
 import com.lightnet.core.enums.Currency;
+import com.lightnet.core.enums.ProfileType;
 import io.swagger.annotations.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Api
 @RestController
@@ -34,170 +39,197 @@ public class FXController {
 
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @ApiModel
+    public static class PaymentOption {
+        boolean disabled;
+        String estimatedDelivery;
+        String formattedEstimatedDelivery;
+        List<String> estimatedDeliveryDelays;
+        Fee fee;
+        float sourceAmount;
+        float targetAmount;
+        Currency sourceCurrency;
+        Currency targetCurrency;
+        String payIn;
+        String payOut;
+        List<ProfileType> allowedProfileTypes;
+        String payInProduct;
+        float feePercentage;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @ApiModel
+    public static class Fee {
+        float transferwise;
+        float payIn;
+        float discount;
+        float partner;
+        float total;
+
+        public Fee(float transferwise, float payIn, float discount, float partner, float total) {
+            this.transferwise = transferwise;
+            this.payIn = payIn;
+            this.discount = discount;
+            this.partner = partner;
+            this.total = total;
+        }
+
+        public Fee() {
+        }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @ApiModel
+    public static class InquireQuoteResp {
+
+        private Currency sourceCurrency;
+        private Currency targetCurrency;
+        private float targetAmount;
+        private String payOut;
+        private float rate;
+        private String createdTime;
+        private String rateType;
+        private boolean guaranteedTargetAmountAllowed;
+        private boolean targetAmountAllowed;
+        private boolean guaranteedTargetAmount;
+        private String providedAmountType;
+        @ApiModelProperty
+        private List<PaymentOption> paymentOptions;
+        private List<Notice> notices;
+
+    }
+
+
     @ApiImplicitParams({
     })
     @ApiOperation(value = "Inquire Quote")
     @PostMapping()
-    public String inquireQuote(@RequestBody InquireQuoteRequest inquireQuoteRequest) {
+    public InquireQuoteResp inquireQuote(@RequestBody InquireQuoteRequest inquireQuoteRequest) {
+        InquireQuoteResp.InquireQuoteRespBuilder builder = new InquireQuoteResp.InquireQuoteRespBuilder();
+        builder.sourceCurrency(Currency.GBP).targetCurrency(Currency.USD).targetAmount(110f).payOut("BANK_TRANSFER")
+                .rate(1.30745f).createdTime("2019-04-09T11:46:38Z").rateType("FIXED").guaranteedTargetAmountAllowed(true)
+                .targetAmountAllowed(true).guaranteedTargetAmount(false).providedAmountType("TARGET");
 
 
-        return "{\n" +
-                "    \"sourceCurrency\": \"GBP\",\n" +
-                "    \"targetCurrency\": \"USD\",\n" +
-                "    \"targetAmount\": 110,\n" +
-                "    \"payOut\": \"BANK_TRANSFER\",\n" +
-                "    \"rate\": 1.30745,\n" +
-                "    \"createdTime\": \"2019-04-09T11:46:38Z\",\n" +
-                "    \"rateType\": \"FIXED\",\n" +
-                "    \"guaranteedTargetAmountAllowed\": true,\n" +
-                "    \"targetAmountAllowed\": true,\n" +
-                "    \"guaranteedTargetAmount\": false,\n" +
-                "    \"providedAmountType\": \"TARGET\",\n" +
-                "    \"paymentOptions\": [\n" +
-                "        {\n" +
-                "            \"disabled\": false,\n" +
-                "            \"estimatedDelivery\": \"2019-04-10T12:30:00Z\",\n" +
-                "            \"formattedEstimatedDelivery\": \"by Apr 10\",\n" +
-                "            \"estimatedDeliveryDelays\": [],\n" +
-                "            \"fee\": {\n" +
-                "                \"transferwise\": 0.87,\n" +
-                "                \"payIn\": 0,\n" +
-                "                \"discount\": 0,\n" +
-                "                \"partner\": 0,\n" +
-                "                \"total\": 0.87\n" +
-                "            },\n" +
-                "            \"sourceAmount\": 85,\n" +
-                "            \"targetAmount\": 110,\n" +
-                "            \"sourceCurrency\": \"GBP\",\n" +
-                "            \"targetCurrency\": \"USD\",\n" +
-                "            \"payIn\": \"BANK_TRANSFER\",\n" +
-                "            \"payOut\": \"BANK_TRANSFER\",\n" +
-                "            \"allowedProfileTypes\": [\n" +
-                "                \"PERSONAL\",\n" +
-                "                \"BUSINESS\"\n" +
-                "            ],\n" +
-                "            \"payInProduct\": \"CHEAP\",\n" +
-                "            \"feePercentage\": 0.0102\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"disabled\": true,\n" +
-                "            \"estimatedDelivery\": null,\n" +
-                "            \"formattedEstimatedDelivery\": null,\n" +
-                "            \"estimatedDeliveryDelays\": [],\n" +
-                "            \"fee\": {\n" +
-                "                \"transferwise\": 1.15,\n" +
-                "                \"payIn\": 0,\n" +
-                "                \"discount\": 0,\n" +
-                "                \"partner\": 0,\n" +
-                "                \"total\": 1.15\n" +
-                "            },\n" +
-                "            \"sourceAmount\": 85.28,\n" +
-                "            \"targetAmount\": 110,\n" +
-                "            \"sourceCurrency\": \"GBP\",\n" +
-                "            \"targetCurrency\": \"USD\",\n" +
-                "            \"payIn\": \"BALANCE\",\n" +
-                "            \"payOut\": \"BANK_TRANSFER\",\n" +
-                "            \"allowedProfileTypes\": [\n" +
-                "                \"PERSONAL\",\n" +
-                "                \"BUSINESS\"\n" +
-                "            ],\n" +
-                "            \"disabledReason\": {\n" +
-                "                \"code\": \"error.payInmethod.disabled\",\n" +
-                "                \"message\": \"Open a borderless account and add funds to instantly pay for your transfers.\"\n" +
-                "            },\n" +
-                "            \"payInProduct\": \"BALANCE\",\n" +
-                "            \"feePercentage\": 0.0135\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"notices\": []\n" +
-                "}\n";
+        builder.paymentOptions(getPaymentOptionList()).notices(Lists.newLinkedList());
+        return builder.build();
+    }
+
+    @Getter
+    @Setter
+    @ApiModel
+    public static class Notice {
+        String text;
+        String link;
+        String type;
+
+        public Notice(String text, String link, String type) {
+            this.text = text;
+            this.link = link;
+            this.type = type;
+        }
+
+        public Notice() {
+        }
+    }
+
+    @Getter
+    @Setter
+    @ApiModel
+    public static class CreateQuoteResp {
+        String id;
+        Currency sourceCurrency;
+        Currency targetCurrency;
+        float sourceAmount;
+        String payOut;
+        float rate;
+        String createdTime;
+        int user;
+        int profile;
+        String rateType;
+        String rateExpirationTime;
+        boolean guaranteedTargetAmountAllowed;
+        boolean targetAmountAllowed;
+        boolean guaranteedTargetAmount;
+        String providedAmountType;
+        List<PaymentOption> paymentOptions;
+        String status;
+        String expirationTime;
+        List<Notice> notices;
+
+        public CreateQuoteResp(String id, Currency sourceCurrency, Currency targetCurrency, float sourceAmount,
+                               String payOut, float rate, String createdTime, int user, int profile, String rateType,
+                               String rateExpirationTime, boolean guaranteedTargetAmountAllowed, boolean targetAmountAllowed,
+                               boolean guaranteedTargetAmount, String providedAmountType, List<PaymentOption> paymentOptions,
+                               String status, String expirationTime, List<Notice> notices) {
+            this.id = id;
+            this.sourceCurrency = sourceCurrency;
+            this.targetCurrency = targetCurrency;
+            this.sourceAmount = sourceAmount;
+            this.payOut = payOut;
+            this.rate = rate;
+            this.createdTime = createdTime;
+            this.user = user;
+            this.profile = profile;
+            this.rateType = rateType;
+            this.rateExpirationTime = rateExpirationTime;
+            this.guaranteedTargetAmountAllowed = guaranteedTargetAmountAllowed;
+            this.targetAmountAllowed = targetAmountAllowed;
+            this.guaranteedTargetAmount = guaranteedTargetAmount;
+            this.providedAmountType = providedAmountType;
+            this.paymentOptions = paymentOptions;
+            this.status = status;
+            this.expirationTime = expirationTime;
+            this.notices = notices;
+        }
+
+        public CreateQuoteResp() {
+        }
     }
 
     @ApiImplicitParams({
     })
     @ApiOperation(value = "create")
     @PostMapping("/create")
-    public String create(@RequestBody InquireQuoteRequest inquireQuoteRequest) {
+    public CreateQuoteResp create(@RequestBody InquireQuoteRequest inquireQuoteRequest) {
+        CreateQuoteResp resp = new CreateQuoteResp("11144c35-9fe8-4c32-b7fd-d05c2a7734bf", Currency.GBP, Currency.USD,
+                100f, "BANK_TRANSFER", 1.30445f, "2019-04-05T13:18:58Z", 55,
+                101, "FIXED", "2019-04-08T13:18:57Z", true,
+                true, false, "SOURCE", getPaymentOptionList(),
+                "PENDING", "2019-04-05T13:48:58Z", getNoticeList());
+        return resp;
+    }
 
-        return "{\n" +
-                "    \"id\": \"11144c35-9fe8-4c32-b7fd-d05c2a7734bf\",\n" +
-                "    \"sourceCurrency\": \"GBP\",\n" +
-                "    \"targetCurrency\": \"USD\",\n" +
-                "    \"sourceAmount\": 100,\n" +
-                "    \"payOut\": \"BANK_TRANSFER\",\n" +
-                "    \"rate\": 1.30445,\n" +
-                "    \"createdTime\": \"2019-04-05T13:18:58Z\",\n" +
-                "    \"user\": 55,\n" +
-                "    \"profile\": 101,\n" +
-                "    \"rateType\": \"FIXED\",\n" +
-                "    \"rateExpirationTime\": \"2019-04-08T13:18:57Z\",\n" +
-                "    \"guaranteedTargetAmountAllowed\": true,\n" +
-                "    \"targetAmountAllowed\": true,\n" +
-                "    \"guaranteedTargetAmount\": false,\n" +
-                "    \"providedAmountType\": \"SOURCE\",\n" +
-                "    \"paymentOptions\": [\n" +
-                "        {\n" +
-                "            \"disabled\": false,\n" +
-                "            \"estimatedDelivery\": \"2019-04-08T12:30:00Z\",\n" +
-                "            \"formattedEstimatedDelivery\": \"by Apr 8\",\n" +
-                "            \"estimatedDeliveryDelays\": [],\n" +
-                "            \"fee\": {\n" +
-                "                \"transferwise\": 0.92,\n" +
-                "                \"payIn\": 0,\n" +
-                "                \"discount\": 0,\n" +
-                "                \"partner\": 0,\n" +
-                "                \"total\": 0.92\n" +
-                "            },\n" +
-                "            \"sourceAmount\": 100,\n" +
-                "            \"targetAmount\": 129.24,\n" +
-                "            \"sourceCurrency\": \"GBP\",\n" +
-                "            \"targetCurrency\": \"USD\",\n" +
-                "            \"payIn\": \"BANK_TRANSFER\",\n" +
-                "            \"payOut\": \"BANK_TRANSFER\",\n" +
-                "            \"allowedProfileTypes\": [\n" +
-                "                \"PERSONAL\",\n" +
-                "                \"BUSINESS\"\n" +
-                "            ],\n" +
-                "            \"payInProduct\": \"CHEAP\",\n" +
-                "            \"feePercentage\": 0.0092\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"disabled\": true,\n" +
-                "            \"estimatedDelivery\": null,\n" +
-                "            \"formattedEstimatedDelivery\": null,\n" +
-                "            \"estimatedDeliveryDelays\": [],\n" +
-                "            \"fee\": {\n" +
-                "                \"transferwise\": 1.11,\n" +
-                "                \"payIn\": 0,\n" +
-                "                \"discount\": 0,\n" +
-                "                \"partner\": 0,\n" +
-                "                \"total\": 1.11\n" +
-                "            },\n" +
-                "            \"sourceAmount\": 100,\n" +
-                "            \"targetAmount\": 129,\n" +
-                "            \"sourceCurrency\": \"GBP\",\n" +
-                "            \"targetCurrency\": \"USD\",\n" +
-                "            \"payIn\": \"BALANCE\",\n" +
-                "            \"payOut\": \"BANK_TRANSFER\",\n" +
-                "            \"allowedProfileTypes\": [\n" +
-                "                \"PERSONAL\",\n" +
-                "                \"BUSINESS\"\n" +
-                "            ],\n" +
-                "            \"disabledReason\": {\n" +
-                "                \"code\": \"error.payInmethod.disabled\",\n" +
-                "                \"message\": \"Open a borderless account and add funds to instantly pay for your transfers.\"\n" +
-                "            },\n" +
-                "            \"payInProduct\": \"BALANCE\",\n" +
-                "            \"feePercentage\": 0.0111\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"status\": \"PENDING\",\n" +
-                "    \"expirationTime\": \"2019-04-05T13:48:58Z\",\n" +
-                "    \"notices\": [{\n" +
-                "        \"text\": \"You can have a maximum of 3 open transfers with a guaranteed rate. After that, they'll be transferred using the live rate. Complete or cancel your other transfers to regain the use of guaranteed rate.\",\n" +
-                "        \"link\": null,\n" +
-                "        \"type\": \"WARNING\"\n" +
-                "    }]\n" +
-                "}";
+    private List<PaymentOption> getPaymentOptionList() {
+        Fee fee1 = new Fee(0.87f, 0, 0, 0, 0.87f);
+        List<ProfileType> profileTypes = Lists.newLinkedList();
+        profileTypes.add(ProfileType.PERSONAL);
+        profileTypes.add(ProfileType.BUSINESS);
+
+        PaymentOption.PaymentOptionBuilder optionBuilder1 = new PaymentOption.PaymentOptionBuilder();
+        optionBuilder1.disabled(false).estimatedDelivery("2019-04-10T12:30:00Z").formattedEstimatedDelivery("by Apr 10")
+                .estimatedDeliveryDelays(Lists.newArrayList()).fee(fee1).sourceAmount(85f).targetAmount(110f)
+                .sourceCurrency(Currency.GBP).targetCurrency(Currency.USD).payIn("BANK_TRANSFER").payOut("BANK_TRANSFER")
+                .allowedProfileTypes(profileTypes).payInProduct("CHEAP").feePercentage(0.0102f);
+        List<PaymentOption> options = Lists.newLinkedList();
+        options.add(optionBuilder1.build());
+
+        return options;
+    }
+
+    private List<Notice> getNoticeList() {
+        List<Notice> list = Lists.newLinkedList();
+        Notice notice = new Notice("You can have a maximum of 3 open transfers with a guaranteed rate. After that, " +
+                "they'll be transferred using the live rate. Complete or cancel your other transfers to regain the use " +
+                "of guaranteed rate.", "", "WARNING");
+        list.add(notice);
+        return list;
     }
 }
