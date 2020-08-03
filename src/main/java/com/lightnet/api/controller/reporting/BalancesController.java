@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api
+@Api(tags = {"Balance"})
 @RestController
 @RequestMapping(value = "/api/v1/balances")
 public class BalancesController {

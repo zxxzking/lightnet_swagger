@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api
+@Api(tags = {"FX"})
 @RestController
 @RequestMapping(value = "/v2/quotes/")
 public class FXController {

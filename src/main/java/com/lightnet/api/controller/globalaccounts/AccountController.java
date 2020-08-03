@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Api
+@Api(tags = {"Account"})
 @RestController
 @RequestMapping(value = "/api/v1/global_accounts/")
 public class AccountController {
