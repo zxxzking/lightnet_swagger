@@ -6,5 +6,6 @@ public enum Capability {
     VIEW,
     CREATE,
     UPDATE,
-    DELETE
+    DELETE,
+    ROOT
 }
