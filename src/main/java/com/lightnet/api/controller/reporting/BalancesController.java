@@ -1,12 +1,15 @@
 package com.lightnet.api.controller.reporting;
 
 import com.google.common.collect.Lists;
+import com.lightnet.annotation.UserAuthenticate;
 import com.lightnet.core.dto.BalanceHistory;
 import com.lightnet.core.dto.BalanceInfo;
+import com.lightnet.core.enums.Capability;
 import com.lightnet.core.enums.Currency;
 import com.lightnet.core.resp.CommonResp;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +23,7 @@ public class BalancesController {
     @ApiImplicitParams({@ApiImplicitParam(paramType = "header", dataType = "String", name = "Authorization", value = "token", required = true)})
     @ApiOperation(value = "获取当前余额")
     @GetMapping(value = "/current")
-    public List<BalanceInfo> getCurrentBalance() {
+    public List<BalanceInfo> getCurrentBalance(@RequestHeader(value = "Authorization") String token) {
         List<BalanceInfo> infoList = Lists.newArrayList();
         BalanceInfo.BalanceInfoBuilder builder = BalanceInfo.builder();
         builder.user_id("xxx")
@@ -44,6 +47,7 @@ public class BalancesController {
     })
     @ApiOperation(value = "获取余额历史记录")
     @GetMapping(value = "/history")
+    @UserAuthenticate(capability = Capability.UPDATE)
     public CommonResp<BalanceHistory> getBalanceHistory() {
         CommonResp<BalanceHistory> resp = new CommonResp<>();
         resp.setHas_more(false);
