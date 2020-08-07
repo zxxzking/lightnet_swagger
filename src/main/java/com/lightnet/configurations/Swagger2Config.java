@@ -47,6 +47,7 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
                 .forCodeGeneration(false)
                 .pathMapping("/")
                 .select()
+                .apis(RequestHandlerSelectors.basePackage("com.lightnet.api.controller"))
                 .build()
                 .apiInfo(apiInfo());
     }
