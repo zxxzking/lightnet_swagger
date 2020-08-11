@@ -1,0 +1,17 @@
+currency cloud test API Key and token
+
+#michael.ran
+
+{
+    "api_key": "745dbaee98a8b7115df3696b6fa7b48959294c34117e7240ebcd1e07268a9bad"
+}
+
+
+
+#liquidnet@lightnet.io
+
+
+{
+    "api_key": "728e2eff368aaf6865c6c9f239971128e8595d2c104bab5108c14536fa285461"
+}
+
