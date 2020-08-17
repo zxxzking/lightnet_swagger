@@ -139,7 +139,7 @@
             </plugin>
         </plugins>
         <defaultGoal>
-            install
+            compile
         </defaultGoal>
     </build>
 
